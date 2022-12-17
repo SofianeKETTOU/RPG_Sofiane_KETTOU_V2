@@ -4,7 +4,7 @@ import com.isep.rpg.Warrior;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
-        // Il faudra initialiser un "InputParser"...11666
+        // Il faudra initialiser un "InputParser"...
         Game game = new Game(null);
         game.start();
     }
