@@ -665,7 +665,7 @@ public class Game {
                 potion_heal.healvalue = potion_heal.healvalue+5;
                 potion_degat.degatvalue = potion_degat.degatvalue+5;
                 potion_mana.winmanapoint = potion_degat.winmanapoint+5;
-                displayMessage("Les potions de régénération et de dégat ont gagné +5 d'efficacité");
+                displayMessage("Les potions de régénération, de dégat et de mana ont gagné +5 d'efficacité");
                 break;
         }
     }
