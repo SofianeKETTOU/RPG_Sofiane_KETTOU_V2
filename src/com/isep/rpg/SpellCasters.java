@@ -1,6 +1,7 @@
 package com.isep.rpg;
 
 public abstract class SpellCasters extends Combatant {
+    int nbpotionmana = 3;
     int manapoint = 100;
     public SpellCasters(String n, int h, int a) {
         super(n, h, a);

@@ -50,6 +50,7 @@ public class Game {
 
        Potion potion_heal = new Potion("Potion de régénération");
        Potion potion_degat = new Potion("Potion de dégat");
+       Potion potion_mana = new Potion("Potion de mana");
 
         System.out.println("Combien de Héros voulez vous: ");
         int nbheros = scanner.nextInt();
@@ -225,42 +226,85 @@ public class Game {
                                 displayMessage("Vous n'avez plus de nourriture votre tour a été sauté");
                             }
                         } else if (choixattaque == 3) {
-                            displayMessage("Veuillez choisir votre potion: \n 1-Potion de régénération("+goodOne.nbpotionheal+") / 2-Potion de dégat("+goodOne.nbpotiondegat+")");
-                            int choixpotion = scanner.nextInt();
-                            while (choixpotion > 2 || choixpotion < 1) {
-                                displayMessage("La valeur que vouus avez choisi n'est pas comprise entre 1 et 2. \n Veuillez choisir une autre valeur:");
-                                choixpotion = scanner.nextInt();
-                            }
-                            if (choixpotion == 1) {
-                                String filePathPotion = "src/sound/PotionDrinking.wav";
-                                try {
-                                    AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filePathPotion));
-                                    Clip clip = AudioSystem.getClip();
-                                    clip.open(audioInput);
-                                    clip.start();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                            if(goodOne instanceof SpellCasters){
+                                displayMessage("Veuillez choisir votre potion: \n 1-Potion de régénération("+goodOne.nbpotionheal+") / 2-Potion de dégat("+goodOne.nbpotiondegat+") / 3-Potion de mana("+((SpellCasters) goodOne).nbpotionmana+")");
+                                int choixpotion = scanner.nextInt();
+                                while (choixpotion > 3 || choixpotion < 1) {
+                                    displayMessage("La valeur que vouus avez choisi n'est pas comprise entre 1 et 3. \n Veuillez choisir une autre valeur:");
+                                    choixpotion = scanner.nextInt();
                                 }
-                                Thread.sleep(750);
-                                potion_heal.regenerate(goodOne);
-                                displayMessage("Il reste " + goodOne.nbpotionheal + " potion de heal à " + goodOne.getName());
-                            } else if (choixpotion == 2) {
-                                displayMessage("Sur qui voulez vous lancer la potion:");
-                                for(int l = 0; l<enemies.size();l++){
-                                    displayMessage((l+1)+"-"+enemies.get(l).getName());
-                                }
-                                ixEnemy = scanner.nextInt();
-                                while (ixEnemy < 1 || ixEnemy > enemies.size()) {
-                                    displayMessage("Veuillez choisir une valeur comprise entre 1 et " + enemies.size());
+                                if (choixpotion == 1) {
+                                    String filePathPotion = "src/sound/PotionDrinking.wav";
+                                    try {
+                                        AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filePathPotion));
+                                        Clip clip = AudioSystem.getClip();
+                                        clip.open(audioInput);
+                                        clip.start();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    Thread.sleep(750);
+                                    potion_heal.regenerate(goodOne);
+                                    displayMessage("Il reste " + goodOne.nbpotionheal + " potion de heal à " + goodOne.getName());
+                                } else if (choixpotion == 2) {
+                                    displayMessage("Sur qui voulez vous lancer la potion:");
+                                    for(int l = 0; l<enemies.size();l++){
+                                        displayMessage((l+1)+"-"+enemies.get(l).getName());
+                                    }
                                     ixEnemy = scanner.nextInt();
+                                    while (ixEnemy < 1 || ixEnemy > enemies.size()) {
+                                        displayMessage("Veuillez choisir une valeur comprise entre 1 et " + enemies.size());
+                                        ixEnemy = scanner.nextInt();
+                                    }
+                                    badOne = enemies.get((ixEnemy-1));
+                                    potion_degat.degat(badOne, goodOne);
+                                    displayMessage("Il reste " + goodOne.nbpotiondegat + " potion de dégat à " + goodOne.getName());
+                                    if (badOne.getHealthPoint() <= 0) {
+                                        enemies.remove(badOne);
+                                        displayMessage(ANSI_GREEN+"Bravo, " + goodOne.getName() + " a vaincu " + badOne.getName() + " !!!"+ANSI_RESET);
+                                        // ixEnemy=1;
+                                    }
+                                }else if(choixpotion == 3){
+                                    potion_mana.mana((SpellCasters) goodOne);
                                 }
-                                badOne = enemies.get((ixEnemy-1));
-                                potion_degat.degat(badOne, goodOne);
-                                displayMessage("Il reste " + goodOne.nbpotiondegat + " potion de dégat à " + goodOne.getName());
-                                if (badOne.getHealthPoint() <= 0) {
-                                    enemies.remove(badOne);
-                                    displayMessage(ANSI_GREEN+"Bravo, " + goodOne.getName() + " a vaincu " + badOne.getName() + " !!!"+ANSI_RESET);
-                                   // ixEnemy=1;
+                            }else {
+                                displayMessage("Veuillez choisir votre potion: \n 1-Potion de régénération(" + goodOne.nbpotionheal + ") / 2-Potion de dégat(" + goodOne.nbpotiondegat + ")");
+                                int choixpotion = scanner.nextInt();
+                                while (choixpotion > 2 || choixpotion < 1) {
+                                    displayMessage("La valeur que vouus avez choisi n'est pas comprise entre 1 et 2. \n Veuillez choisir une autre valeur:");
+                                    choixpotion = scanner.nextInt();
+                                }
+                                if (choixpotion == 1) {
+                                    String filePathPotion = "src/sound/PotionDrinking.wav";
+                                    try {
+                                        AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filePathPotion));
+                                        Clip clip = AudioSystem.getClip();
+                                        clip.open(audioInput);
+                                        clip.start();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    Thread.sleep(750);
+                                    potion_heal.regenerate(goodOne);
+                                    displayMessage("Il reste " + goodOne.nbpotionheal + " potion de heal à " + goodOne.getName());
+                                } else if (choixpotion == 2) {
+                                    displayMessage("Sur qui voulez vous lancer la potion:");
+                                    for (int l = 0; l < enemies.size(); l++) {
+                                        displayMessage((l + 1) + "-" + enemies.get(l).getName());
+                                    }
+                                    ixEnemy = scanner.nextInt();
+                                    while (ixEnemy < 1 || ixEnemy > enemies.size()) {
+                                        displayMessage("Veuillez choisir une valeur comprise entre 1 et " + enemies.size());
+                                        ixEnemy = scanner.nextInt();
+                                    }
+                                    badOne = enemies.get((ixEnemy - 1));
+                                    potion_degat.degat(badOne, goodOne);
+                                    displayMessage("Il reste " + goodOne.nbpotiondegat + " potion de dégat à " + goodOne.getName());
+                                    if (badOne.getHealthPoint() <= 0) {
+                                        enemies.remove(badOne);
+                                        displayMessage(ANSI_GREEN + "Bravo, " + goodOne.getName() + " a vaincu " + badOne.getName() + " !!!" + ANSI_RESET);
+                                        // ixEnemy=1;
+                                    }
                                 }
                             }
                         } else if (choixattaque == 4) {
@@ -403,38 +447,81 @@ public class Game {
                         displayMessage("Vous n'avez plus de nourriture votre tour a été sauté");
                     }
                 } else if (choixattaque == 3) {
-                    displayMessage("Veuillez choisir votre potion: \n 1-Potion de régénération("+goodOne.nbpotionheal+") / 2-Potion de dégat("+goodOne.nbpotiondegat+")");
-                    int choixpotion = scanner.nextInt();
-                    while (choixpotion > 2 || choixpotion < 1) {
-                        displayMessage("La valeur que vouus avez choisi n'est pas comprise entre 1 et 2. \n Veuillez choisir une autre valeur:");
-                        choixpotion = scanner.nextInt();
-                    }
-                    if (choixpotion == 1) {
-                        String filePathPotion = "src/sound/PotionDrinking.wav";
-                        try {
-                            AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filePathPotion));
-                            Clip clip = AudioSystem.getClip();
-                            clip.open(audioInput);
-                            clip.start();
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    if(goodOne instanceof SpellCasters){
+                            displayMessage("Veuillez choisir votre potion: \n 1-Potion de régénération("+goodOne.nbpotionheal+") / 2-Potion de dégat("+goodOne.nbpotiondegat+") / 3-Potion de mana("+((SpellCasters) goodOne).nbpotionmana+")");
+                            int choixpotion = scanner.nextInt();
+                            while (choixpotion > 3 || choixpotion < 1) {
+                                displayMessage("La valeur que vouus avez choisi n'est pas comprise entre 1 et 3. \n Veuillez choisir une autre valeur:");
+                                choixpotion = scanner.nextInt();
+                            }
+                            if (choixpotion == 1) {
+                                String filePathPotion = "src/sound/PotionDrinking.wav";
+                                try {
+                                    AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filePathPotion));
+                                    Clip clip = AudioSystem.getClip();
+                                    clip.open(audioInput);
+                                    clip.start();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                Thread.sleep(750);
+                                potion_heal.regenerate(goodOne);
+                                displayMessage("Il reste " + goodOne.nbpotionheal + " potion de heal à " + goodOne.getName());
+                            } else if (choixpotion == 2) {
+                                displayMessage("Sur qui voulez vous lancer la potion:");
+                                for(int l = 0; l<enemies.size();l++){
+                                    displayMessage((l+1)+"-"+enemies.get(l).getName());
+                                }
+                                ixEnemy = scanner.nextInt();
+                                while (ixEnemy < 1 || ixEnemy > enemies.size()) {
+                                    displayMessage("Veuillez choisir une valeur comprise entre 1 et " + enemies.size());
+                                    ixEnemy = scanner.nextInt();
+                                }
+                                badOne = enemies.get((ixEnemy-1));
+                                potion_degat.degat(badOne, goodOne);
+                                displayMessage("Il reste " + goodOne.nbpotiondegat + " potion de dégat à " + goodOne.getName());
+                                if (badOne.getHealthPoint() <= 0) {
+                                    enemies.remove(badOne);
+                                    displayMessage(ANSI_GREEN+"Bravo, " + goodOne.getName() + " a vaincu " + badOne.getName() + " !!!"+ANSI_RESET);
+                                    // ixEnemy=1;
+                                }
+                            }else if(choixpotion == 3){
+                                potion_mana.mana((SpellCasters) goodOne);
+                            }
+                    }else {
+                        displayMessage("Veuillez choisir votre potion: \n 1-Potion de régénération(" + goodOne.nbpotionheal + ") / 2-Potion de dégat(" + goodOne.nbpotiondegat + ")");
+                        int choixpotion = scanner.nextInt();
+                        while (choixpotion > 2 || choixpotion < 1) {
+                            displayMessage("La valeur que vouus avez choisi n'est pas comprise entre 1 et 2. \n Veuillez choisir une autre valeur:");
+                            choixpotion = scanner.nextInt();
                         }
-                        Thread.sleep(750);
-                        potion_heal.regenerate(goodOne);
-                        displayMessage("Il reste " + goodOne.nbpotionheal + " potion de heal à " + goodOne.getName());
-                    } else if (choixpotion == 2) {
-                        displayMessage("Sur qui voulez vous lancer la potion:");
-                        for(int l = 0; l<enemies.size();l++){
-                            displayMessage((l+1)+"-"+enemies.get(l).getName());
-                        }
-                        ixEnemy = scanner.nextInt();
-                        while (ixEnemy < 1 || ixEnemy > enemies.size()) {
-                            displayMessage("Veuillez choisir une valeur comprise entre 1 et " + enemies.size());
+                        if (choixpotion == 1) {
+                            String filePathPotion = "src/sound/PotionDrinking.wav";
+                            try {
+                                AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filePathPotion));
+                                Clip clip = AudioSystem.getClip();
+                                clip.open(audioInput);
+                                clip.start();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            Thread.sleep(750);
+                            potion_heal.regenerate(goodOne);
+                            displayMessage("Il reste " + goodOne.nbpotionheal + " potion de heal à " + goodOne.getName());
+                        } else if (choixpotion == 2) {
+                            displayMessage("Sur qui voulez vous lancer la potion:");
+                            for (int l = 0; l < enemies.size(); l++) {
+                                displayMessage((l + 1) + "-" + enemies.get(l).getName());
+                            }
                             ixEnemy = scanner.nextInt();
+                            while (ixEnemy < 1 || ixEnemy > enemies.size()) {
+                                displayMessage("Veuillez choisir une valeur comprise entre 1 et " + enemies.size());
+                                ixEnemy = scanner.nextInt();
+                            }
+                            badOne = enemies.get((ixEnemy - 1));
+                            potion_degat.degat(badOne, goodOne);
+                            displayMessage("Il reste " + goodOne.nbpotiondegat + " potion de dégat à " + goodOne.getName());
                         }
-                        badOne = enemies.get((ixEnemy-1));
-                        potion_degat.degat(badOne, goodOne);
-                        displayMessage("Il reste " + goodOne.nbpotiondegat + " potion de dégat à " + goodOne.getName());
                     }
                 } else if (choixattaque == 4) {
                     displayMessage("Le héros "+goodOne.getName()+" s'est protéger de l'attaque !");
@@ -564,16 +651,21 @@ public class Game {
                 }
                 break;
             case 4:
-                for(int j=0; j< heros.size();j++){
+                for(int j=0; j< heros.size();j++) {
                     heros.get(j).nbpotionheal = heros.get(j).nbpotionheal + 3;
                     heros.get(j).nbpotiondegat = heros.get(j).nbpotiondegat + 3;
-                    displayMessage(heros.get(j).getName()+" posède maintenant "+heros.get(j).nbpotionheal+" potions de heal et "+heros.get(j).nbpotiondegat+" potions de dégats");
-                }
+                    if (heros.get(j) instanceof SpellCasters) {
+                        ((SpellCasters) heros.get(j)).nbpotionmana = ((SpellCasters) heros.get(j)).nbpotionmana + 3;
+                        displayMessage(heros.get(j).getName() + " posède maintenant " + heros.get(j).nbpotionheal + " potions de heal, " + heros.get(j).nbpotiondegat + " potions de dégats et "+((SpellCasters)heros.get(j)).nbpotionmana+" potion de mana");
+                    } else
+                        displayMessage(heros.get(j).getName() + " posède maintenant " + heros.get(j).nbpotionheal + " potions de heal et " + heros.get(j).nbpotiondegat + " potions de dégats");
+                    }
                 break;
             case 5:
                 potion_heal.healvalue = potion_heal.healvalue+5;
                 potion_degat.degatvalue = potion_degat.degatvalue+5;
                 displayMessage("Les potions de régénération et de dégat ont gagné +5 d'efficacité");
+                break;
         }
     }
 

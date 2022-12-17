@@ -3,6 +3,7 @@ package com.isep.rpg;
 public class Potion extends Consumable{
     int healvalue = 15;
     int degatvalue = 15;
+    int winmanapoint = 20;
 
     public Potion(String name) {
         super(name);
@@ -26,6 +27,15 @@ public class Potion extends Consumable{
             hero.nbpotiondegat--;
         }else{
             System.out.println("Vous n'avez plus de potion de dégats");
+        }
+    }
+
+    public void mana(SpellCasters hero) {
+        if(hero.nbpotionmana>0) {
+            hero.manapoint = hero.manapoint + winmanapoint;
+            hero.nbpotionmana--;
+        }else{
+            System.out.println(hero.getName()+"n'a plus de potion de mana");
         }
     }
     public int getVie() {
