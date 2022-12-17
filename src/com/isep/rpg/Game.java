@@ -42,7 +42,6 @@ public class Game {
         }
 
         String ANSI_RED_BG = "\u001B[0;41m";
-        String ANSI_GREEN_BOLD = "\u001B[1;92m";
         String ANSI_GREEN = "\u001B[0;92m";
         String ANSI_RESET = "\u001B[0m";
         Scanner scanner = new Scanner(System.in);
@@ -146,8 +145,7 @@ public class Game {
                     }
                     badOne.fight(goodOne);
                     if (goodOne.getHealthPoint() <= 0) {
-                        displayMessage
-                                (ANSI_RED_BG+"Le pauvre " + goodOne.getName() + " a été vaincu..."+ANSI_RESET);
+                        displayMessage(ANSI_RED_BG+"Le pauvre " + goodOne.getName() + " a été vaincu..."+ANSI_RESET);
                         heros.remove(ixHero);
                         ixHero--; // Correction: évite que le suivant perde son tour
                     } else {
@@ -301,7 +299,7 @@ public class Game {
                         break;
                     }
                     if (enemies.size() == 0) {
-                        displayMessage(ANSI_GREEN_BOLD+"BRAVO, les héros ont gagné, le monde est sauvé !!!"+ANSI_RESET);
+                        displayMessage(ANSI_GREEN+"BRAVO, les héros ont gagné, le monde est sauvé !!!"+ANSI_RESET);
                         String filePathwin = "src/sound/victory.wav";
                         try {
                             AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filePathwin));
@@ -385,8 +383,7 @@ public class Game {
                         }
                         badOne = enemies.get((ixEnemy - 1));
                         // Riposte du gentil, s'il n'est pas vaincu
-                        displayMessage("Le gentil " + goodOne.getName()
-                                + " attaque le méchant " + badOne.getName() + "...");
+                        displayMessage("Le gentil " + goodOne.getName() + " attaque le méchant " + badOne.getName() + "...");
                         goodOne.fight(badOne);
                     }
                 } else if (choixattaque == 2) {
@@ -454,7 +451,7 @@ public class Game {
                     continue;
                 }
                     if (badOne.getHealthPoint() <= 0) {
-                        displayMessage("Bravo, " + goodOne.getName() + " a vaincu " + badOne.getName() + " !!!");
+                        displayMessage(ANSI_GREEN+"Bravo, " + goodOne.getName() + " a vaincu " + badOne.getName() + " !!!"+ANSI_RESET);
                         enemies.remove((ixEnemy - 1));
                         ixEnemy = 1;
                     }else{
@@ -470,13 +467,13 @@ public class Game {
                         }
                         badOne.fight(goodOne);
                         if (goodOne.getHealthPoint() <= 0) {
-                            displayMessage("Non, " + badOne.getName() + " a vaincu " + goodOne.getName() + " !!!");
+                            displayMessage(ANSI_RED_BG+"Non, " + badOne.getName() + " a vaincu " + goodOne.getName() + " !!!"+ANSI_RESET);
                             heros.remove(ixHero);
                             ixHero--;
                         };
                     }
                     if (heros.size() == 0) {
-                        displayMessage("Les héros ont perdu, c'est la fin du monde...");
+                        displayMessage(ANSI_RED_BG+"Les héros ont perdu, c'est la fin du monde..."+ANSI_RESET);
                         String filePathlose = "src/sound/lose.wav";
                         try {
                             AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filePathlose));
@@ -490,7 +487,7 @@ public class Game {
                         break;
                     }
                     if (enemies.size() == 0) {
-                        displayMessage("BRAVO, les héros ont gagné, le monde est sauvé !!!");
+                        displayMessage(ANSI_GREEN+"BRAVO, les héros ont gagné, le monde est sauvé !!!"+ANSI_RESET);
                         String filePathwin = "src/sound/victory.wav";
                         try {
                             AudioInputStream audioInput = AudioSystem.getAudioInputStream(new File(filePathwin));
