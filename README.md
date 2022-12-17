@@ -1,1 +1,1 @@
-# Code amorce pour le TP4 RPG
+# Voici mon projet pour le RPG Lite 3000
