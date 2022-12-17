@@ -354,7 +354,7 @@ public class Game {
                             e.printStackTrace();
                         }
                         Thread.sleep(2000);
-                        reward(potion_heal,potion_degat);
+                        reward(potion_heal,potion_degat,potion_mana);
                         break;
                     }
 
@@ -585,7 +585,7 @@ public class Game {
                             e.printStackTrace();
                         }
                         Thread.sleep(2000);
-                        reward(potion_heal,potion_degat);
+                        reward(potion_heal,potion_degat,potion_mana);
                         break;
                     }
                     ixHero = (ixHero + 1) % heros.size();
@@ -600,7 +600,7 @@ public class Game {
         }
     }
 
-    public void reward(Potion potion_heal,Potion potion_degat){
+    public void reward(Potion potion_heal,Potion potion_degat, Potion potion_mana){
         Scanner scanner = new Scanner(System.in);
         displayMessage("Quels reward vous voulez choisir: \n 1-Augementation de dégats\n 2-Augementation des flèches pour les hunters et baisse du cout en mana pour les Healer et Mage\n 3-Augementation de la résistance au attaques\n 4- Augementer le nombre de potion et de nourriture\n 5- Augementer l'efficaciter des potion et de la nourriture");
         int choixrew = scanner.nextInt();
@@ -664,6 +664,7 @@ public class Game {
             case 5:
                 potion_heal.healvalue = potion_heal.healvalue+5;
                 potion_degat.degatvalue = potion_degat.degatvalue+5;
+                potion_mana.winmanapoint = potion_degat.winmanapoint+5;
                 displayMessage("Les potions de régénération et de dégat ont gagné +5 d'efficacité");
                 break;
         }

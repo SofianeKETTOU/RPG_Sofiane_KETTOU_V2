@@ -3,7 +3,7 @@ package com.isep.rpg;
 public class Potion extends Consumable{
     int healvalue = 15;
     int degatvalue = 15;
-    int winmanapoint = 20;
+    int winmanapoint = 15;
 
     public Potion(String name) {
         super(name);
